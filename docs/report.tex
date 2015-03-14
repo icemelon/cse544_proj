@@ -1,0 +1,90 @@
+\documentclass[letterpaper,twocolumn,10pt]{article}
+\usepackage{epsfig,endnotes,usenix}
+\usepackage{lastpage}
+\usepackage{titling}
+\usepackage[hyphens]{url}
+\usepackage{graphicx}
+\usepackage[TABBOTCAP]{subfigure}
+\usepackage{pslatex}
+\usepackage{amsmath}
+\usepackage[noend]{algpseudocode}
+\usepackage{xspace}
+\usepackage[normalem]{ulem}
+\usepackage[table]{xcolor}
+\usepackage[pdftex,bookmarks=false,colorlinks=true,citecolor=blue,filecolor=black,linkcolor=blue,urlcolor=black]{hyperref}
+\DeclareGraphicsExtensions{.eps,.jpg,.png,.gif}
+\graphicspath{{./images/}}
+\usepackage{color}
+\usepackage{ifpdf}
+\usepackage{enumitem}
+\usepackage[font=footnotesize,labelfont=bf,skip=5pt]{caption}
+\usepackage{tabulary}
+\usepackage{relsize}
+\usepackage{amsmath}
+\usepackage{pifont}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{pbox}
+\usepackage[square,comma,numbers,sort&compress]{natbib}
+
+
+\author{\rm Haichen Shen\\ 
+       haichen@cs.washington.edu \\
+       University of Washington \\
+       }
+\date{}
+
+
+\begin{document}
+
+\title{Performance Comparison of Graph Queries Between Graph Databases and Relation Databases Over A Large Graph}
+\maketitle
+
+\section{Introduction}
+Our world is full of all diversed networks, ranging from social networks to collaboration networks, from road networks to the Internet networks, etc. Each network can be regarded as a graph-oriented dataset. Nowadays, these graph datasets are usually very large, up to thousands or tens of thousands of nodes, and up to millions of edges. Moreover, the size of graph keeps growing with the lapse of time. For instance, in 2010, Facebook has 608 million active users, while this number becomes 1.23 billion by 2013 \cite{fb_users}. A measurement study \cite{ager2012anatomy} shows that the Internet consisted of at least half a million peering links between distinct ASes in 2011. Hence, how to store, manage, and query a large graph becomes a much more challenging task.
+
+The basic model of all these graphs is simple. It consists of nodes and edges between nodes, where each node and each edge can assosicate with many attributes and data. Edges can be either directed or undirected. In addition, a graph can evolve over the time. To manage such type of data, we actually have many choices in deciding the database models. In this project I only consider two types of databases, relational databases and graph databases. Relational databases are the dominating model in this era. Graph databases, which are designed to store and manage graphs, emerge recently, along with the popularization of NoSQL databases. Using the relational databases, a graph can be simply organized in two tables, one for the nodes and its assoicated data, the other for the edges. For graph databases, it's more straightforward with respect to the data model, since graph databases inherently support the notion of nodes and edges. 
+
+However, it is unclear which type of database model performs better in executing queries over a graph. Since the underlying models are different between relational databases and graph databases, the query optimizers of two types of databases might act divergently on the same queries. As a consequent, the performance of executing the same queries vary. In this project, I am going to explore and compare the performance in querying graphs between relational database and graph database. Given that graph databases support queries that are not supported in traditional SQL queries, e.g., path finding, I will implement the same algorithm while using SQL queries to access data.
+
+In this paper, I selected MySQL \cite{mysql} as the relational database and the Neo4j \cite{neo4j} as the graph database and compared their performance on a series of queries over a large graph dataset. Both databases are popular, modern and open-sourced databases. Their performance comparison should be a good indicator to find out which type of database model suits better for a large graph dataset. The graph dataset used in the evaluation is the Internet measurement results. In this measurement, over 200 nodes issued traceroutes to 78,744 targets all over the world and recorded all hops in each traceroute. Later I converted the traceroute results into a graph with undirected edges. The graph consists of XXX nodes and XXXX edges. The measurement carried out for XX days, which allows me to issue queries about the changes in the graph over the time.
+
+The evaluation results show that blabla...
+
+In section 2, I will introduce the graph database model used by Neo4j and query language devised for querying a graph. Section 3 explains how the dataset is collected and converted into a graph. Section 4 provides a step by step overview of how the data is stored in both MySQL and Neo4j database, and the testing quries issued to them. Evaluation results are shown in the Section 5.
+
+\section{Background}
+Introduce the graph database model in Neo4j and Cyper query language.
+
+\section{Dataset}
+The Internet nowadays becomes such an enormous system that contains thousands of autonomous systems. An autonomous system (AS) is a collection of connected IP prefixes controlled by one or more network operators. All IP prefixes inside an AS share the same routing policy to the Internet. One cannot distinguish the difference among the IP prefixes within an AS from outside. As a result, an AS can be treated as a simple node in the scale of Internet. Each AS will be associated with a unique autonomous system number (ASN). There are various types of ASes, ranging from regional or international service providers, content providers, enterprise and academic networks, and exchange points. 
+%Because of its complexity and variety, it makes Internet measurement and reasoning a much harder problem for researchers. However, understanding the topology of Internet and its changes is substantially beneficial in many aspects, such as troubleshooting the slow connection and network outages, choosing the traffic route with lower latency and higher bandwidth, and even developing a better routing algorithms.
+
+%Given that Internet consists of various different components, we need to gather the measurement results from multiple sources including online public data sources and measurements committed by ourselves. These data sets are usually in heterogeneous formats, defective, repeated, and sometimes even contradictory. How to store, manage, and further analyze these data in a database is a key challenge in this project. In addition, Internet topology is never constant; instead it changes quite frequently. Comparisons of measurement results between epochs and between different vantage points are inevitable and favorable for reasoning the topology transitions.
+
+The purpose of this measurement is to figure out the connectivity among all ASes. The measurement consists of over 200 probing servers sending traceroute packets to the destination IP addresses throughout the Internet. These probing servers belong to Planetlab platform \cite{madhyastha2006iplane}. Planetlab is a global overlay network that allows researchers to deploy and test broad-coverage services, including the measurement of the Internet at a large scale. It contains 1343 nodes at 657 geographically distributed sites all over the world. 
+
+%I am going to use three online public datasets and collect traceroute measurements from about 30 different places for the entire analysis. The three online public data sets are (a) IP address to AS number mapping from RouteView [1] project, (b) Internet exchange point (IXP) data from PeeringDB [2], (c) iPlane \cite{madhyastha2006iplane} daily traceroute data, based on PlanetLab platform \cite{chun2003planetlab} Our measurement runs daily from 30 Yahoo CDN PoPs, tracerouting to about 10.7M targets. The results is expected to disclose the Internet topology changes from day to day, and difference in topology seen from Internet core and seen from Internet edge.
+
+\section{Approach}
+
+\section{Evaluation}
+Three types of queries will be evaluated with and without the index created:
+\begin{enumerate}
+\item Basic SQL queries: Number of distinct nodes, number of distinct edges, degree of nodes.
+\item Path finding between two nodes: (a) shortest path, (b) all possible paths.
+\item Difference between the graphs from two epochs.
+\end{enumerate}
+
+
+\section{Discussion}
+
+\section{Concolusion}
+
+\bibliographystyle{abbrv}
+{
+%\small
+\bibliography{ref}  % ref.bib
+}
+
+\end{document}
