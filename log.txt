@@ -1,0 +1,12 @@
+Neo4j
+- add ASes
+	CREATE (:AS {asn: #{asn}, desc: '#{desc}'})
+  Insert 72934 ASes in 2807.458472173 sec
+- add AS links
+	MATCH (as1:AS {asn: #{asn1}}), (as2:AS {asn: #{asn2}}) 
+	CREATE (as1)-[:Link {date: #{date}}->(as2)
+  Insert 85388 AS Links in 29703.178650654 sec
+
+SQL
+create table astable (asn int not null, description text);
+create table aslink (asn1 int not null, asn2 int not null, date DATE);
