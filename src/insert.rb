@@ -1,6 +1,7 @@
 require 'optparse'
 
 require_relative 'graphdb.rb'
+require_relative 'relationdb.rb'
 
 def parse_asn asn
     # to make cache not caching nil, we use 0 to indicate nil
@@ -31,10 +32,24 @@ if $0 == __FILE__
         opts.on("-l", "--link LINK", "Specify the AS link file to insert AS links into the database") do |link|
             options[:link] = link
         end
+        options[:db] = nil
+        opts.on("--db DATABASE", [:graph, :relation], "Specify the type of datebase (graph, relation) (required)") do |db|
+            options[:db] = db
+        end
     end
     optparse.parse!
+    puts "Database: #{options[:db]}"
 
-    db = GraphDatabase.new
+    if options[:db].nil?
+        puts "No database specified"
+        exit
+    end
+    
+    if options[:db] == :graph
+        db = GraphDatabase.new
+    else
+        db = RelationDatabase.new
+    end
 
     if not options[:as].nil?
         start = Time.now
@@ -68,7 +83,12 @@ if $0 == __FILE__
     elsif not options[:link].nil?
         start = Time.now
         count = 0
-        date = File.basename(options[:link]).gsub("ASLink", '').gsub(".txt", '').to_i
+        date = File.basename(options[:link]).gsub("ASLink", '').gsub(".txt", '')
+        if options[:db] == :graph
+            date = date.to_i
+        else
+            date = date[0...4] + "-" + date[4...6] + "-" + date[6...8]
+        end
         File.open(options[:link]).each_line do |line|
             asn1, asn2 = line.chomp.split
             asn1 = asn1.to_i

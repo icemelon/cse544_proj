@@ -55,7 +55,10 @@ class GraphDatabase
     end
 
     def insert_as_link(asn1, asn2, date)
-        @session.query("MATCH (as1:AS {asn: #{asn1}}), (as2:AS {asn: #{asn2}}) CREATE (as1)-[:Link {date: #{date}}->(as2)")
+        @session.query <<-eos
+            MATCH (as1:AS {asn: #{asn1}}), (as2:AS {asn: #{asn2}}) 
+            CREATE (as1)-[:Link {date: #{date}}]->(as2)
+        eos
     end
 end
 
