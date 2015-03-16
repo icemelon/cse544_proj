@@ -5,8 +5,59 @@ Neo4j
 - add AS links
 	MATCH (as1:AS {asn: #{asn1}}), (as2:AS {asn: #{asn2}}) 
 	CREATE (as1)-[:Link {date: #{date}}->(as2)
-  Insert 85388 AS Links in 29703.178650654 sec
+  Insert 85388 AS Links in 29703.178650654 sec (20150219)
+  Insert 85388 AS Links in 2924.611547364 sec (20150219 new)
+
+  Insert 84894 AS Links in 2950.536187486 sec (20150220)
+  Insert 84894 AS Links in 2913.471487463 sec (20150220 new)
+
+
+- match (s:AS {asn: 174}), (p:AS {asn: 35491}), paths=allShortestPaths(s-[:Date20150219*]->p) return paths;
+- match (s:AS {asn: 174}), (p:AS {asn: 35491}), paths=allShortestPaths(s-[:Date20150219*]->p) return paths;
+
+match (n:AS)-[:Date20150219]-(:AS) 
+return n, count(*) as degree 
+order by degree desc 
+limit 10
+- Returned 10 rows in 1156 ms
+
+match (n:AS)-[:Date20150219]-(:AS) 
+with n, count(*) as degree 
+where degree >= 800
+return n.asn, degree
+order by degree desc
+- Returned 19 rows in 1350 ms
 
 SQL
 create table astable (asn int not null, description text);
 create table aslink (asn1 int not null, asn2 int not null, date DATE);
+
+Insert 72934 ASes in 2494.434422123 sec
+
+create index asn_index on astable (asn) using hash;
+
+Insert 85388 AS Links in 2915.271265256 sec (20150219)
+
+Insert 84894 AS Links in 2919.32286652 sec (20150220)
+
+
+> from 128.208.4.1 to 8.8.8.8
+src: 128.208.4.1 (AS73), dst: 8.8.8.8 (AS15169)
+AS73 (WASHINGTON-AS - University of Washington,US) -> AS10430 (WA-K20 - Washington State K-20 Telecommunications Network,US) -> AS101 (WASH-NSF-AS - University of Washington,US) -> AS15169 (GOOGLE - Google Inc.,US)
+Query finishes in 1.172 sec (22 queries in total)
+
+> from 128.208.4.1 to 8.8.8.8 on 20150219
+src: 128.208.4.1 (AS73), dst: 8.8.8.8 (AS15169)
+AS73 (WASHINGTON-AS - University of Washington,US) -> AS10430 (WA-K20 - Washington State K-20 Telecommunications Network,US) -> AS101 (WASH-NSF-AS - University of Washington,US) -> AS15169 (GOOGLE - Google Inc.,US)
+Query finishes in 1.395 sec (22 queries in total)
+
+> from 8.8.8.8 to 128.208.4.1
+src: 8.8.8.8 (AS15169), dst: 128.208.4.1 (AS73)
+No path found from AS15169 to AS73
+Query finishes in 1057.727 sec (63576 queries in total)
+
+> from 8.8.8.8 to 128.208.4.1
+src: 8.8.8.8 (AS15169), dst: 128.208.4.1 (AS73)
+AS15169 (GOOGLE - Google Inc.,US) -> AS174 (COGENT-174 - Cogent Communications,US) -> AS10430 (WA-K20 - Washington State K-20 Telecommunications Network,US) -> AS73 (WASHINGTON-AS - University of Washington,US)
+Query finishes in 853.952 sec (21486 queries in total)
+
