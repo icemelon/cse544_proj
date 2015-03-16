@@ -1,21 +1,8 @@
 require 'optparse'
 
-require_relative 'graphdb.rb'
-require_relative 'relationdb.rb'
-
-def parse_asn asn
-    # to make cache not caching nil, we use 0 to indicate nil
-    return nil if asn.empty?
-    asn = asn.chomp
-    asn = asn[0...asn.index('_')] if asn.include? '_'
-    asn = asn[1...-1] if asn[0] == '{'
-    asn = asn[0...asn.index(',')] if asn.include? ','
-    if asn.include? '.'
-        x, y = asn.split '.'
-        asn = (x.to_i << 16) + y.to_i
-    end
-    return asn.to_i
-end
+require_relative 'lib/asmapper.rb'
+require_relative 'lib/graphdb.rb'
+require_relative 'lib/relationdb.rb'
 
 if $0 == __FILE__
     options = {}
@@ -74,7 +61,7 @@ if $0 == __FILE__
         File.open(options[:prefix]).each_line do |line|
             tokens = line.chomp.split
             prefix = tokens.shift
-            asn = parse_asn tokens.shift
+            asn = ASMapper::parse_asn tokens.shift
             db.insert_prefix(prefix, asn)
             count += 1
         end
@@ -83,12 +70,7 @@ if $0 == __FILE__
     elsif not options[:link].nil?
         start = Time.now
         count = 0
-        date = File.basename(options[:link]).gsub("ASLink", '').gsub(".txt", '')
-        if options[:db] == :graph
-            date = date.to_i
-        else
-            date = date[0...4] + "-" + date[4...6] + "-" + date[6...8]
-        end
+        date = File.basename(options[:link]).gsub("ASLink", '').gsub(".txt", '').to_i
         File.open(options[:link]).each_line do |line|
             asn1, asn2 = line.chomp.split
             asn1 = asn1.to_i
