@@ -3,6 +3,6 @@
 *.blg
 *.fls
 *.fdb_latexmk
-docs/*.log
+report/*.log
 .DS_Store
 *.swp

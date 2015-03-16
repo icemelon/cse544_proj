@@ -12,8 +12,18 @@ Neo4j
   Insert 84894 AS Links in 2913.471487463 sec (20150220 new)
 
 
+- match (s:AS {asn: 174}), (p:AS {asn: 35491}), paths=shortestPath(s-[:Date20150219*]->p) return paths;
 - match (s:AS {asn: 174}), (p:AS {asn: 35491}), paths=allShortestPaths(s-[:Date20150219*]->p) return paths;
-- match (s:AS {asn: 174}), (p:AS {asn: 35491}), paths=allShortestPaths(s-[:Date20150219*]->p) return paths;
+
+> from 128.208.4.1 to 8.8.8.8
+src: 128.208.4.1 (AS73), dst: 8.8.8.8 (AS15169)
+AS73 (WASHINGTON-AS - University of Washington,US) -> AS10430 (WA-K20 - Washington State K-20 Telecommunications Network,US) -> AS101 (WASH-NSF-AS - University of Washington,US) -> AS15169 (GOOGLE - Google Inc.,US)
+Query finish in 0.021 sec
+> from 8.8.8.8 to 128.208.4.1
+src: 8.8.8.8 (AS15169), dst: 128.208.4.1 (AS73)
+AS15169 (GOOGLE - Google Inc.,US) -> AS101 (WASH-NSF-AS - University of Washington,US) -> AS10430 (WA-K20 - Washington State K-20 Telecommunications Network,US) -> AS73 (WASHINGTON-AS - University of Washington,US)
+Query finish in 0.009 sec
+
 
 match (n:AS)-[:Date20150219]-(:AS) 
 return n, count(*) as degree 
@@ -51,12 +61,12 @@ src: 128.208.4.1 (AS73), dst: 8.8.8.8 (AS15169)
 AS73 (WASHINGTON-AS - University of Washington,US) -> AS10430 (WA-K20 - Washington State K-20 Telecommunications Network,US) -> AS101 (WASH-NSF-AS - University of Washington,US) -> AS15169 (GOOGLE - Google Inc.,US)
 Query finishes in 1.395 sec (22 queries in total)
 
-> from 8.8.8.8 to 128.208.4.1
+> from 8.8.8.8 to 128.208.4.1 (directed)
 src: 8.8.8.8 (AS15169), dst: 128.208.4.1 (AS73)
 No path found from AS15169 to AS73
 Query finishes in 1057.727 sec (63576 queries in total)
 
-> from 8.8.8.8 to 128.208.4.1
+> from 8.8.8.8 to 128.208.4.1 (non-directed)
 src: 8.8.8.8 (AS15169), dst: 128.208.4.1 (AS73)
 AS15169 (GOOGLE - Google Inc.,US) -> AS174 (COGENT-174 - Cogent Communications,US) -> AS10430 (WA-K20 - Washington State K-20 Telecommunications Network,US) -> AS73 (WASHINGTON-AS - University of Washington,US)
 Query finishes in 853.952 sec (21486 queries in total)
